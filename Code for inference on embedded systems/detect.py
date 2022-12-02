@@ -35,7 +35,8 @@ from pathlib import Path
 import openpyxl
 from openpyxl import Workbook
 import datetime
-
+import time
+from datetime import time, timedelta
 import torch
 
 FILE = Path(__file__).resolve()
@@ -132,6 +133,7 @@ def run(
     # Print start time
     start_time = datetime.datetime.now()
     LOGGER.info(f"Start time: {start_time}{''}")
+    time_per_frames_inference = datetime.datetime.now()
     
         
     for path, im, im0s, vid_cap, s in dataset:
@@ -227,19 +229,24 @@ def run(
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
                         vid_writer[i] = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
                     vid_writer[i].write(im0)
-
+                    
+        
         # Print time (inference-only)
-        LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
+        time_per_inference1 = time_per_frames_inference
+        time_per_inference2 = datetime.datetime.now()
+        time_per_frames_inference_seconds = (time_per_inference2 - time_per_inference1).total_seconds()
         
         # Write in cells of xlxs file (detections and inference time)
         if not dt[1].dt:
                infer_1 = "No detections"
         else:
-               infer_1 = dt[1].dt
+               infer_1 = time_per_frames_inference_seconds
                infer_2 = infer_2 + infer_1
                if infer_2 >= 1:
                	frames_per_second = count_frames/infer_2
-               	LOGGER.info(f'Inferred frames per second: %.2f' % frames_per_second)
+               	LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}Time inference per this frame: {time_per_frames_inference_seconds* 1E0:.3f}s, Total inference time: {infer_2 * 1E0:.2f}{''}s, Inferred frames per second: {frames_per_second * 1E0:.2f}{''}")
+               else:   
+                       LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{time_per_frames_inference_seconds* 1E0:.3f}s, inference time: {infer_2* 1E0:.2f}{''}s")
                count_frames+=1
         if not len(det):
                dect_1 = "No detections"
@@ -251,6 +258,10 @@ def run(
         clasdect_dic = str(save_dir / clasdect_nam)
         workbook.save(filename=clasdect_dic)
         
+        time_per_frames_inference = datetime.datetime.now()
+        
+        
+        
     # Print results
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
     LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
@@ -260,8 +271,8 @@ def run(
     running_minutes, running_seconds = divmod(delta_time,60)
     running_hours, running_minutes = divmod(running_minutes,60)
     if inference_video_stream_active == 1:
-        frames_per_second = math.trunc(1000/t[1])
-        LOGGER.info(f"Inferred frames per second: {frames_per_second * 1E0:.0f}{'' if frames_per_second>0 else '(no detections)'}, Total time of inference: {int(running_hours)}{''} hours, {int(running_minutes)}{''} minutes and {int(running_seconds)}{''} seconds")
+        #frames_per_second = math.trunc(1000/t[1])
+        LOGGER.info(f"Inferred frames per second: {int(frames_per_second)}{'' if frames_per_second>0 else '(no detections)'}, Total time of inference: {int(running_hours)}{''} hours, {int(running_minutes)}{''} minutes and {int(running_seconds)}{''} seconds")
         sheet.cell(row=1, column=4).value = "Inferred frames per second: " + str(int(frames_per_second))
         clasdect_nam = "classesdetect.xlsx"
         clasdect_dic = str(save_dir / clasdect_nam)
