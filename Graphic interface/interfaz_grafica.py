@@ -160,6 +160,7 @@ class App(customtkinter.CTk):
         self.select_source_folder = "Sin seleccionar"
         self.select_source_folder_files = "Sin seleccionar"
         self.select_folder = "Sin seleccionar"
+        b = 1
 
     def select_frame_by_name(self, name):
         # set button color for selected button
