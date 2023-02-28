@@ -139,6 +139,12 @@ class App(customtkinter.CTk):
 
         self.progressbar_inference_video2 = customtkinter.CTkLabel(self.video_frame, text="100%(9814/9814)", font=("Microsoft GothicNeo Bold", 12), anchor = "e")
         self.progressbar_inference_video2.grid(row=2, column=2, padx=(300,0))
+
+        self.video_inference_start_button = customtkinter.CTkButton(self.video_frame, text="Empezar", command = self.video_inference_start_button_event) #, image=self.icon_image_image, compound="bottom", command= self.video_source_save_button_1_event) # image=self.icon_image_image,
+        self.video_inference_start_button.grid(row=4, column=2, padx=(0,100))
+
+        self.video_inference_stop_button = customtkinter.CTkButton(self.video_frame, text="Detener", command = self.video_inference_stop_button_event) #, image=self.icon_image_image, compound="bottom", command= self.video_source_save_button_1_event) # image=self.icon_image_image,
+        self.video_inference_stop_button.grid(row=4, column=2, padx=(200,0))
         
 
         # create streaming frame
@@ -160,7 +166,8 @@ class App(customtkinter.CTk):
         self.select_source_folder = "Sin seleccionar"
         self.select_source_folder_files = "Sin seleccionar"
         self.select_folder = "Sin seleccionar"
-        b = 1
+        self.video_inference_start_button.configure(state="disabled")
+        self.video_inference_stop_button.configure(state="disabled")
 
     def select_frame_by_name(self, name):
         # set button color for selected button
@@ -208,10 +215,12 @@ class App(customtkinter.CTk):
     def video_source_selector_button_1_event(self):
         if self.a == 1:
             self.inference_video_image.configure(image=self.video_inference_image2)
-            self.a = 2        
+            self.a = 2
+            self.video_inference_start_button.configure(state="enabled")
+            self.video_inference_stop_button.configure(state="disabled")       
         else:
             self.inference_video_image.configure(image=self.video_inference_image)
-            self.a = 1     
+            self.a = 1
 
     def video_source_selector_button_2_event(self):
         self.select_source_folder = filedialog.askdirectory()
@@ -225,6 +234,14 @@ class App(customtkinter.CTk):
     def video_source_save_button_1_event(self):
         self.select_folder = filedialog.askdirectory()
         print(self.select_folder)
+    
+    def video_inference_start_button_event(self):
+        self.video_inference_start_button.configure(state="disabled")
+        self.video_inference_stop_button.configure(state="enabled")
+    
+    def video_inference_stop_button_event(self):
+        self.video_inference_start_button.configure(state="enabled")
+        self.video_inference_stop_button.configure(state="disabled")
     
 
 if __name__ == "__main__":
