@@ -26,7 +26,7 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
         # load images side bar
-        self.image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "imagenes")
+        self.image_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Images")
         self.logo_image = customtkinter.CTkImage(Image.open(os.path.join(self.image_path, "icono_logotipo.png")), size=(150, 150))
         self.cover_home_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(self.image_path, "portada_inicio_light.png")),
                                                  dark_image=Image.open(os.path.join(self.image_path, "portada_inicio_dark.png")), size=(910, 650))
