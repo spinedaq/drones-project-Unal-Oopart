@@ -242,7 +242,7 @@ def run(
         else:
                infer_1 = time_per_frames_inference_seconds
                infer_2 = infer_2 + infer_1
-               if infer_2 >= 1:
+               if infer_2 >= 1: #At least one second of inference has passed
                	frames_per_second = count_frames/infer_2
                	LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}Time inference per this frame: {time_per_frames_inference_seconds* 1E0:.3f}s, Total inference time: {infer_2 * 1E0:.2f}{''}s, Inferred frames per second: {frames_per_second * 1E0:.2f}{''}")
                else:   
