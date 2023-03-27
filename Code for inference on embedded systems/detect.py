@@ -244,9 +244,9 @@ def run(
                infer_2 = infer_2 + infer_1
                if infer_2 >= 1: #At least one second of inference has passed
                	frames_per_second = count_frames/infer_2
-               	LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}Time inference per this frame: {time_per_frames_inference_seconds* 1E0:.3f}s, Total inference time: {infer_2 * 1E0:.2f}{''}s, Inferred frames per second: {frames_per_second * 1E0:.2f}{''}")
+               	LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}Time inference per this frame: {time_per_frames_inference_seconds* 1E0:.3f}s, Total inference time: {infer_2 * 1E0:.3f}{''}s, Inferred frames per second: {frames_per_second * 1E0:.3f}{''}")
                else:   
-                       LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{time_per_frames_inference_seconds* 1E0:.3f}s, inference time: {infer_2* 1E0:.2f}{''}s")
+                       LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{time_per_frames_inference_seconds* 1E0:.3f}s, inference time: {infer_2* 1E0:.3f}{''}s")
                count_frames+=1
         if not len(det):
                dect_1 = "No detections"
@@ -272,7 +272,7 @@ def run(
     running_hours, running_minutes = divmod(running_minutes,60)
     if inference_video_stream_active == 1:
         #frames_per_second = math.trunc(1000/t[1])
-        LOGGER.info(f"Inferred frames per second: {int(frames_per_second)}{'' if frames_per_second>0 else '(no detections)'}, Total time of inference: {int(running_hours)}{''} hours, {int(running_minutes)}{''} minutes and {int(running_seconds)}{''} seconds")
+        LOGGER.info(f"Inferred frames per second: {frames_per_second}{'' if frames_per_second>0 else '(no detections)'}, Total time of inference: {int(running_hours)}{''} hours, {int(running_minutes)}{''} minutes and {int(running_seconds)}{''} seconds")
         sheet.cell(row=1, column=4).value = "Inferred frames per second: " + str(int(frames_per_second))
         clasdect_nam = "classesdetect.xlsx"
         clasdect_dic = str(save_dir / clasdect_nam)
