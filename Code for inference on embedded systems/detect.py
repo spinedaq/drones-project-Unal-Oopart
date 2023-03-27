@@ -272,7 +272,10 @@ def run(
     running_hours, running_minutes = divmod(running_minutes,60)
     if inference_video_stream_active == 1:
         #frames_per_second = math.trunc(1000/t[1])
-        LOGGER.info(f"Inferred frames per second: {frames_per_second}{'' if frames_per_second>0 else '(no detections)'}, Total time of inference: {int(running_hours)}{''} hours, {int(running_minutes)}{''} minutes and {int(running_seconds)}{''} seconds")
+        parts = str(frames_per_second).split(".")
+        third_decimals = parts[1][:3]
+        frames_per_second_third_decimals = parts[0] + "." + third_decimals
+        LOGGER.info(f"Inferred frames per second: {float(frames_per_second_third_decimals)}{'' if frames_per_second>0 else '(no detections)'}, Total time of inference: {int(running_hours)}{''} hours, {int(running_minutes)}{''} minutes and {int(running_seconds)}{''} seconds")
         sheet.cell(row=1, column=4).value = "Inferred frames per second: " + str(int(frames_per_second))
         clasdect_nam = "classesdetect.xlsx"
         clasdect_dic = str(save_dir / clasdect_nam)
