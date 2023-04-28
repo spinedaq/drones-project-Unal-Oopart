@@ -934,9 +934,9 @@ class App(customtkinter.CTk):
             9:'van'}
 
         for i in range(len(rootdir)):
-        df = pd.read_csv(dir+rootdir[i], sep=" ",header=None)
-        r=df[0].value_counts()
-        newdf=pd.concat([newdf,r],axis=1, ignore_index=True)
+		df = pd.read_csv(dir+rootdir[i], sep=" ",header=None)
+		r=df[0].value_counts()
+		newdf=pd.concat([newdf,r],axis=1, ignore_index=True)
         newdf=newdf.sort_index()
         newdf=newdf.rename(index=filas)
 
