@@ -916,7 +916,7 @@ class App(customtkinter.CTk):
         self.run()
 
     def infographic_func(self):
-        dir = self.video.select_folder + '/exp' + '/labels'
+        dir = self.video_select_folder + '/exp' + '/labels'
         rootdir=os.listdir(dir)
         rootdir.sort(key=lambda s: int(s.split('.txt')[0][-1]))
 
