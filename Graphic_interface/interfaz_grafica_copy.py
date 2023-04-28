@@ -980,8 +980,10 @@ class App(customtkinter.CTk):
             t.set_position((x,y))
         ax11.legend(labels=h, loc="upper center", ncol=2)
         plt.axis('equal')
-        plt.savefig("Ejemplo1.jpg")
-        plt.show()
+        plt.savefig(str(self.video_select_folder)+'/exp/'+'infographic.jpg')
+        infographic_image = cv2.imread(str(self.video_select_folder)+'/exp/'+'infographic.jpg')
+        cv2.imshow('Infografía',infographic_image)
+        cv2.waitKey(0)
 
 if __name__ == "__main__":
     app = App()
